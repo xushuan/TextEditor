@@ -25,10 +25,12 @@ ApplicationWindow {
 
             MenuItem {
                 text: qsTr("&Open")
+                onTriggered: openDialog.open()
             }
             MenuItem {
                 text: qsTr("&Save As...")
             }
+            MenuSeparator {}
             MenuItem {
                 text: qsTr("&Quit")
             }
@@ -39,12 +41,15 @@ ApplicationWindow {
 
             MenuItem {
                 text: qsTr("&Copy")
+                shortcut: "Ctrl+C"
             }
             MenuItem {
                 text: qsTr("Cu&t")
+                shortcut: "Ctrl+T"
             }
             MenuItem {
                 text: qsTr("&Paste")
+                shortcut: "Ctrl+V"
             }
         }
 
@@ -80,10 +85,30 @@ ApplicationWindow {
                     id: openButton
                     text: "\ue90b" // icon-folder-open-empty
                     tipText: qsTr("Open")
+                    onClicked: openDialog.open()
                 }
                 ToolSeparator {}
             }
         }
+    }
+
+    FileDialog {
+        id: openDialog
+        fileMode: FileDialog.OpenFile
+        selectedNameFilter.index: 1
+//        nameFilters: ["Text files (*.txt)", "HTML files (*.html *.htm)"]
+        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        onAccepted: document.load(file)
+    }
+
+    FileDialog {
+        id: saveDialog
+        fileMode: FileDialog.SaveFile
+        defaultSuffix: document.fileType
+        nameFilters: openDialog.nameFilters
+//        selectedNameFilter.index: document.fileType === "txt" ? 0 : 1
+        folder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+        onAccepted: document.saveAs(file)
     }
 
     Flickable {
@@ -143,6 +168,38 @@ ApplicationWindow {
 
     MessageDialog {
         id: errorDialog
+    }
+
+    Menu {
+        id: contextMenu
+
+        MenuItem {
+            text: qsTr("Copy")
+            enabled: textArea.selectedText
+            onTriggered: textArea.copy()
+        }
+        MenuItem {
+            text: qsTr("Cut")
+            enabled: textArea.selectedText
+            onTriggered: textArea.cut()
+        }
+        MenuItem {
+            text: qsTr("Paste")
+            enabled: textArea.canPaste
+            onTriggered: textArea.paste()
+        }
+
+        MenuSeparator {}
+
+        MenuItem {
+            text: qsTr("Font...")
+            onTriggered: fontDialog.open()
+        }
+
+        MenuItem {
+            text: qsTr("Color...")
+            onTriggered: colorDialog.open()
+        }
     }
 
     footer: ToolBarCtm {
