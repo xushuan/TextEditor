@@ -7,7 +7,10 @@
 
 #include <QDebug>
 #include <QFontDatabase>
+#include <QQmlContext>
 #include <QQmlFileSelector>
+
+#include "FontManager.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -21,10 +24,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 #endif
 
-    QFontDatabase fontDatabase;
-    if (fontDatabase.addApplicationFont(QCoreApplication::applicationDirPath() + "/Fonts/icomoon.ttf") == -1) {
-        qWarning() << "Failed to load icomoon.ttf";
-    }
+    FontManager fontManager;
 
     QStringList selectors;
 #ifdef QT_EXTRA_FILE_SELECTOR
@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     QQmlFileSelector::get(&engine)->setExtraSelectors(selectors);
+    engine.rootContext()->setContextProperty("FontManager", &fontManager);
 
     engine.load(QUrl("qrc:/Qml/main.qml"));
     if (engine.rootObjects().isEmpty())

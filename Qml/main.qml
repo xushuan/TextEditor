@@ -65,20 +65,21 @@ ApplicationWindow {
         height: 50
 
         leftPadding: 8
+        topPadding: 8
 
         Flow {
             id: flow
-            width: parent.width
+            anchors.fill: parent
+            anchors.verticalCenter: parent.verticalCenter
 
             Row {
                 id: fileRow
-                ToolButton {
+                ToolButtonCtm {
                     id: openButton
                     text: "\ue90b" // icon-folder-open-empty
-                    font.family: "icomoon"
+                    tipText: qsTr("Open")
                 }
             }
         }
     }
-
 }

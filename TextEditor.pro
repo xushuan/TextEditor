@@ -8,11 +8,14 @@ CONFIG += c++11
 TEMPLATE = app
 TARGET = texteditor
 
+HEADERS += \
+    Src/FontManager.hpp
+
 SOURCES += \
-    Src/main.cpp
+    Src/main.cpp \
+    Src/FontManager.cpp
 
 RESOURCES += qml.qrc
 
 target.path = $$[QT_INSTALL_EXAMPLES]/quickcontrols2/texteditor
 INSTALLS += target
-

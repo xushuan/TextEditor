@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>Qml/main.qml</file>
         <file>Qml/Component/ToolBarCtm.qml</file>
+        <file>Qml/Component/ToolButtonCtm.qml</file>
     </qresource>
 </RCC>
