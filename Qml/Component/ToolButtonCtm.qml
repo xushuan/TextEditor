@@ -12,8 +12,10 @@ ToolButton {
     font.pixelSize: 20
 
     background: Rectangle {
-        color: "transparent"
-        visible: control.hovered //  control.down || (control.enabled && (control.checked || control.highlighted))
+        color: control.down ? "#4eb7bb" : "transparent"
+        opacity: 0.3
+        radius: width / 2
+        visible: control.down
     }
 
     contentItem: Text {
