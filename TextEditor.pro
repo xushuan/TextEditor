@@ -9,11 +9,13 @@ TEMPLATE = app
 TARGET = texteditor
 
 HEADERS += \
-    Src/FontManager.hpp
+    Src/FontManager.hpp \
+    Src/DocumentHandler.hpp
 
 SOURCES += \
     Src/main.cpp \
-    Src/FontManager.cpp
+    Src/FontManager.cpp \
+    Src/DocumentHandler.cpp
 
 RESOURCES += qml.qrc
 

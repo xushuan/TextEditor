@@ -3,7 +3,6 @@ import QtQuick.Controls 2.2
 import QtGraphicalEffects 1.0
 
 ToolBar {
-
     background: Rectangle {
         implicitHeight: parent.height
         color: "white"

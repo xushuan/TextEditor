@@ -11,6 +11,7 @@
 #include <QQmlFileSelector>
 
 #include "FontManager.hpp"
+#include "DocumentHandler.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 #endif
 
-    FontManager fontManager;
+    qmlRegisterType<DocumentHandler>("io.qt.examples.texteditor", 1, 0, "DocumentHandler");
 
     QStringList selectors;
 #ifdef QT_EXTRA_FILE_SELECTOR
@@ -34,6 +35,7 @@ int main(int argc, char *argv[])
         selectors += "touch";
 #endif
 
+    FontManager fontManager;
     QQmlApplicationEngine engine;
     QQmlFileSelector::get(&engine)->setExtraSelectors(selectors);
     engine.rootContext()->setContextProperty("FontManager", &fontManager);

@@ -3,6 +3,8 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.2
 import Qt.labs.platform 1.0
 
+import io.qt.examples.texteditor 1.0
+
 import "Component"
 
 ApplicationWindow {
@@ -79,7 +81,71 @@ ApplicationWindow {
                     text: "\ue90b" // icon-folder-open-empty
                     tipText: qsTr("Open")
                 }
+                ToolSeparator {}
             }
         }
+    }
+
+    Flickable {
+        id: flickable
+        flickableDirection: Flickable.VerticalFlick
+        anchors.fill: parent
+
+        TextArea.flickable: TextArea {
+            id: textArea
+            textFormat: Qt.RichText
+            wrapMode: TextArea.Wrap
+            focus: true
+            selectByMouse: true
+            persistentSelection: true
+            // Different styles have different padding and background
+            // decorations, but since this editor is almost taking up the
+            // entire window, we don't need them.
+            leftPadding: 6
+            rightPadding: 6
+            topPadding: 0
+            bottomPadding: 0
+            background: null
+
+            MouseArea {
+                acceptedButtons: Qt.RightButton
+                anchors.fill: parent
+                onClicked: contextMenu.open()
+            }
+
+            onLinkActivated: Qt.openUrlExternally(link)
+        }
+
+        ScrollBar.vertical: ScrollBar {}
+    }
+
+    DocumentHandler {
+        id: document
+        document: textArea.textDocument
+        cursorPosition: textArea.cursorPosition
+        selectionStart: textArea.selectionStart
+        selectionEnd: textArea.selectionEnd
+        textColor: colorDialog.color
+//        Component.onCompleted: document.load("qrc:/texteditor.html")
+        onLoaded: {
+            textArea.text = text
+        }
+        onError: {
+            errorDialog.text = message
+            errorDialog.visible = true
+        }
+    }
+
+    ColorDialog {
+        id: colorDialog
+        currentColor: "black"
+    }
+
+    MessageDialog {
+        id: errorDialog
+    }
+
+    footer: ToolBarCtm {
+        height: 30
     }
 }

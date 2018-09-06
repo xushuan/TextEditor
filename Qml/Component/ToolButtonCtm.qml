@@ -10,19 +10,18 @@ ToolButton {
 
     font.family: FontManager.iconFont
     font.pixelSize: 20
+    focusPolicy: Qt.TabFocus
 
     background: Rectangle {
-        color: control.down ? "#4eb7bb" : "transparent"
-        opacity: 0.3
-        radius: width / 2
-        visible: control.down
+        color: "transparent"
+        visible: false
     }
 
     contentItem: Text {
         id: buttonText
         text: control.text
         font: control.font
-        color: control.hovered ? "#4eb7bb" : "#565d6b"
+        color: control.down ? "#4eb7bb" : (control.hovered ? "#0099FF" : "#565d6b")
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
