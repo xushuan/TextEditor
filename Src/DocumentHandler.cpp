@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
@@ -292,7 +292,9 @@ void DocumentHandler::load(const QUrl &fileUrl)
         QFile file(fileName);
         if (file.open(QFile::ReadOnly)) {
             QByteArray data = file.readAll();
-            QTextCodec *codec = QTextCodec::codecForHtml(data);
+
+            // 选择UTF-8 解决中文无法显示问题
+            QTextCodec *codec = QTextCodec::codecForHtml(data, QTextCodec::codecForMib(106)); // UTF-8
             if (QTextDocument *doc = textDocument())
                 doc->setModified(false);
 

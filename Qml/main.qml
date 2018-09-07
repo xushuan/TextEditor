@@ -44,8 +44,8 @@ ApplicationWindow {
                 shortcut: "Ctrl+C"
             }
             MenuItem {
-                text: qsTr("Cu&t")
-                shortcut: "Ctrl+T"
+                text: qsTr("&Cut")
+                shortcut: "Ctrl+X"
             }
             MenuItem {
                 text: qsTr("&Paste")
@@ -64,6 +64,32 @@ ApplicationWindow {
             }
             MenuItem {
                 text: qsTr("&Underline")
+            }
+        }
+
+        Menu {
+            title: qsTr("&Set")
+
+            Menu {
+                title: qsTr("&Axis")
+                MenuItem {
+                    text: qsTr("&Axis-X")
+                    onTriggered: cursorAxisX.active = !cursorAxisX.active
+                }
+                MenuItem {
+                    text: qsTr("&Axis-Y")
+                    onTriggered: cursorAxisY.active = !cursorAxisY.active
+                }
+            }
+
+            Menu {
+                title: qsTr("&Language")
+                MenuItem {
+                    text: qsTr("&Language-EN")
+                }
+                MenuItem {
+                    text: qsTr("&Language-CN")
+                }
             }
         }
     }
@@ -268,7 +294,7 @@ ApplicationWindow {
 
         TextArea.flickable: TextArea {
             id: textArea
-            textFormat: Qt.RichText
+            textFormat: TextEdit.AutoText // 保证文本按原格式输出(TextEdit.RichText 会出问题)
             wrapMode: TextArea.Wrap
             focus: true
             selectByMouse: true
@@ -282,7 +308,6 @@ ApplicationWindow {
             topPadding: 0
             bottomPadding: 0
             background: null
-
 
 //            onCursorPositionChanged: {
 //                console.log("cursorPosition", cursorPosition)
@@ -307,41 +332,47 @@ ApplicationWindow {
         }
 
         Loader {
+            id: cursorAxisX
             // Explicitly set the size of the
             // Loader to the parent item's size
             anchors.fill: textArea
             active: false
-            sourceComponent: cursorAxis
+            sourceComponent: cursorAxis_X
+        }
+        Loader {
+            id: cursorAxisY
+            // Explicitly set the size of the
+            // Loader to the parent item's size
+            anchors.fill: textArea
+            active: false
+            sourceComponent: cursorAxis_Y
         }
 
         ScrollBar.vertical: ScrollBar {}
     }
 
     Component {
-        id: cursorAxis
+        id: cursorAxis_X
         Item {
-            property real cursorX: textArea.cursorRectangle.x
-            property real cursorY: textArea.cursorRectangle.y
-            property int cursorWidth: textArea.cursorRectangle.width
-            property int cursorHeight: textArea.cursorRectangle.height
-
             Rectangle {
-                id: axisX
                 x: 0
-                y: parent.cursorY + parent.cursorHeight
+                y: textArea.cursorRectangle.y + textArea.cursorRectangle.height
                 width: parent.width
                 height: 1
-
                 color: "#565d6b"
             }
+        }
+    }
 
+    Component {
+        id: cursorAxis_Y
+
+        Item {
             Rectangle {
-                id: axisY
-                x: parent.cursorX + (parent.cursorWidth)
+                x: textArea.cursorRectangle.x + (textArea.cursorRectangle.width)
                 y: 0
                 width: 1
                 height: parent.height
-
                 color: "#565d6b"
             }
         }
@@ -407,5 +438,10 @@ ApplicationWindow {
 
     footer: ToolBarCtm {
         height: 30
+
+        Text {
+            id: name
+            text: qsTr("lines") + textArea.lineCount
+        }
     }
 }
