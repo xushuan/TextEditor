@@ -87,7 +87,157 @@ ApplicationWindow {
                     tipText: qsTr("Open")
                     onClicked: openDialog.open()
                 }
-                ToolSeparator {}
+                ToolSeparator {
+                    contentItem.visible: fileRow.y === editRow.y
+                }
+            }
+            Row {
+                id: editRow
+                ToolButtonCtm {
+                    id: saveButton
+                    text: "\ue90c" // icon-docs
+                    tipText: qsTr("Save")
+                }
+                ToolButtonCtm {
+                    id: saveAsButton
+                    text: "\ue90d" // icon-scissors
+                    tipText: qsTr("Save as")
+                }
+                ToolButtonCtm {
+                    id: copyButton
+                    text: "\ue903" // icon-paste
+                    tipText: qsTr("Copy")
+
+                    enabled: textArea.selectedText
+                    onClicked: textArea.copy()
+                }
+                ToolButtonCtm {
+                    id: cutButton
+                    text: "\ue904" // icon-paste
+                    tipText: qsTr("Cut")
+
+                    enabled: textArea.selectedText
+                    onClicked: textArea.cut()
+                }
+                ToolSeparator {
+                    contentItem.visible: editRow.y === formatRow.y
+                }
+            }
+
+            Row {
+                id: formatRow
+                ToolButtonCtm {
+                    id: boldButton
+                    text: "\ue900" // icon-bold
+                    tipText: qsTr("Bold")
+
+                    checked: document.bold
+                    onClicked: document.bold = !document.bold
+                }
+                ToolButtonCtm {
+                    id: italicButton
+                    text: "\ue906" // icon-italic
+                    tipText: qsTr("Italic")
+
+                    checked: document.italic
+                    onClicked: document.italic = !document.italic
+                }
+                ToolButtonCtm {
+                    id: underlineButton
+                    text: "\ue910" // icon-underline
+                    tipText: qsTr("Underline")
+
+                    checkable: true
+                    checked: document.underline
+                    onClicked: document.underline = !document.underline
+                }
+                ToolButtonCtm {
+                    id: textColorButton
+                    text: "\ue902" // icon-brush
+                    tipText: qsTr("Brush")
+
+                    onClicked: colorDialog.open()
+
+                    Rectangle {
+                        width: aFontMetrics.width + 3
+                        height: 2
+                        color: document.textColor
+                        parent: textColorButton.contentItem
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.baseline: parent.baseline
+                        anchors.baselineOffset: -1
+
+                        TextMetrics {
+                            id: aFontMetrics
+                            font: textColorButton.font
+                            text: textColorButton.text
+                        }
+                    }
+                }
+                ToolButtonCtm {
+                    id: fontFamilyToolButton
+                    text: qsTr("\ue905") // icon-font
+                    tipText: qsTr("Font")
+
+                    font.bold: document.bold
+                    font.italic: document.italic
+                    font.underline: document.underline
+                    onClicked: {
+                        fontDialog.currentFont.family = document.fontFamily;
+                        fontDialog.currentFont.pointSize = document.fontSize;
+                        fontDialog.open();
+                    }
+                    FontDialog {
+                        id: fontDialog
+                        onAccepted: {
+                            document.fontFamily = font.family;
+                            document.fontSize = font.pointSize;
+                        }
+                    }
+
+                }
+                ToolSeparator {
+                    contentItem.visible: formatRow.y === alignRow.y
+                }
+            }
+            Row {
+                id: alignRow
+                ToolButtonCtm {
+                    id: alignLeftButton
+                    text: "\ue909" // icon-align-left
+                    tipText: qsTr("Left")
+
+                    checkable: true
+                    checked: document.alignment == Qt.AlignLeft
+                    onClicked: document.alignment = Qt.AlignLeft
+                }
+                ToolButtonCtm {
+                    id: alignCenterButton
+                    text: "\ue908" // icon-align-center
+                    tipText: qsTr("Center")
+
+                    checkable: true
+                    checked: document.alignment == Qt.AlignHCenter
+                    onClicked: document.alignment = Qt.AlignHCenter
+                }
+                ToolButtonCtm {
+                    id: alignRightButton
+                    text: "\ue90a" // icon-align-right
+                    tipText: qsTr("Right")
+
+                    checkable: true
+                    checked: document.alignment == Qt.AlignRight
+                    onClicked: document.alignment = Qt.AlignRight
+                }
+                ToolButtonCtm {
+                    id: alignJustifyButton
+                    text: "\ue907" // icon-align-justify
+                    tipText: qsTr("Justify")
+
+                    checkable: true
+                    checked: document.alignment == Qt.AlignJustify
+                    onClicked: document.alignment = Qt.AlignJustify
+                }
             }
         }
     }
