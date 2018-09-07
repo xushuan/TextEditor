@@ -122,6 +122,7 @@ ApplicationWindow {
             wrapMode: TextArea.Wrap
             focus: true
             selectByMouse: true
+            selectByKeyboard: true
             persistentSelection: true
             // Different styles have different padding and background
             // decorations, but since this editor is almost taking up the
@@ -132,6 +133,20 @@ ApplicationWindow {
             bottomPadding: 0
             background: null
 
+
+//            onCursorPositionChanged: {
+//                console.log("cursorPosition", cursorPosition)
+//            }
+
+//            onCursorDelegateChanged: {
+//                console.log("cursorDelegate", cursorDelegate)
+//            }
+
+//            onCursorRectangleChanged: {
+//                console.log("cursorRectangle", cursorRectangle)
+//            }
+
+
             MouseArea {
                 acceptedButtons: Qt.RightButton
                 anchors.fill: parent
@@ -141,7 +156,45 @@ ApplicationWindow {
             onLinkActivated: Qt.openUrlExternally(link)
         }
 
+        Loader {
+            // Explicitly set the size of the
+            // Loader to the parent item's size
+            anchors.fill: textArea
+            active: true
+            sourceComponent: cursorAxis
+        }
+
         ScrollBar.vertical: ScrollBar {}
+    }
+
+    Component {
+        id: cursorAxis
+        Item {
+            property real cursorX: textArea.cursorRectangle.x
+            property real cursorY: textArea.cursorRectangle.y
+            property int cursorWidth: textArea.cursorRectangle.width
+            property int cursorHeight: textArea.cursorRectangle.height
+
+            Rectangle {
+                id: axisX
+                x: 0
+                y: parent.cursorY + parent.cursorHeight
+                width: parent.width
+                height: 1
+
+                color: "#565d6b"
+            }
+
+            Rectangle {
+                id: axisY
+                x: parent.cursorX + (parent.cursorWidth)
+                y: 0
+                width: 1
+                height: parent.height
+
+                color: "#565d6b"
+            }
+        }
     }
 
     DocumentHandler {
