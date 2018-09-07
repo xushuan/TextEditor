@@ -32,5 +32,6 @@ ToolButton {
         visible: control.hovered
         text: qsTr("Tool Button")
         font.pixelSize: 15
+        font.family: FontManager.siyuanFont
     }
 }

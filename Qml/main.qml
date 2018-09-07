@@ -160,7 +160,7 @@ ApplicationWindow {
             // Explicitly set the size of the
             // Loader to the parent item's size
             anchors.fill: textArea
-            active: true
+            active: false
             sourceComponent: cursorAxis
         }
 

@@ -10,6 +10,8 @@ FontManager::FontManager(QObject *parent) : QObject(parent) {
     QString fontPath = QCoreApplication::applicationDirPath();
 
     loadFontFamilyFromTTF(fontPath + "/Fonts/icomoon.ttf", mIconFont);
+    loadFontFamilyFromTTF(fontPath + "/Fonts/AndaleMono.ttf", mAndaleMono);
+    loadFontFamilyFromTTF(fontPath + "/Fonts/SourceHanSansCN-Regular.otf", mSiYuanRegular);
 }
 
 // 加载TTF字体文件
